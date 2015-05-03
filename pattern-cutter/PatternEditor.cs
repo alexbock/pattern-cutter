@@ -32,12 +32,25 @@ namespace pattern_cutter
 
         public Pattern MakePattern()
         {
+            if (selector.Selection.Size.Width == 0 || selector.Selection.Size.Height == 0) return null;
             return new Pattern(txtName.Text, Source, selector.Selection);
         }
 
         private void PatternEditor_Load(object sender, EventArgs e)
         {
             txtName.SelectAll();
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

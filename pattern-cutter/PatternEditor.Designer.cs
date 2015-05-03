@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            pattern_cutter.Configuration configuration1 = new pattern_cutter.Configuration();
+            pattern_cutter.Configuration configuration2 = new pattern_cutter.Configuration();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,6 +47,7 @@
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOK
             // 
@@ -59,6 +60,7 @@
             this.btnOK.TabIndex = 1;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // label1
             // 
@@ -87,10 +89,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.selector.BackColor = System.Drawing.SystemColors.Window;
             this.selector.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            configuration1.DefaultOverscan = 0.2D;
-            configuration1.DPI = 300D;
-            configuration1.TargetInches = 1.25D;
-            this.selector.Config = configuration1;
+            configuration2.DefaultOverscan = 0.2D;
+            configuration2.DPI = 300D;
+            configuration2.TargetInches = 1.25D;
+            this.selector.Config = configuration2;
             this.selector.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selector.Location = new System.Drawing.Point(12, 12);
             this.selector.Name = "selector";
