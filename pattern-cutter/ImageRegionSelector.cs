@@ -46,14 +46,6 @@ namespace pattern_cutter
                 // create a rectangle where the selection points are corners
                 Point start = currentSelectionStart;
                 Point end = currentSelectionEnd;
-                Debug.Print("===");
-                Debug.Print("start (mouse) " + start.ToString());
-                Debug.Print("end (mouse) " + end.ToString());
-                Debug.Print("start (image) " + TranslateMouseToImage(start).ToString());
-                Debug.Print("end (image) " + TranslateMouseToImage(end).ToString());
-                Debug.Print("image / mouse X " + ((double)Source.Width / ImageDestination.Width).ToString());
-                Debug.Print("image / mouse Y " + ((double)Source.Height / ImageDestination.Height).ToString());
-                Debug.Print("===\n");
                 start = TranslateMouseToImage(start);
                 end = TranslateMouseToImage(end);
                 bool centerMode = SelectionOrigin == SelectModeOrigin.Center;

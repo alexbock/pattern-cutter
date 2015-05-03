@@ -17,12 +17,38 @@ namespace pattern_cutter
             InitializeComponent();
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
+        private void menuItemExit_Click(object sender, EventArgs e)
         {
-            Image img = Bitmap.FromFile(@"C:\Users\alex\Desktop\img\earliest-dogs-660x433-130306-akita-660x433.jpg");
-            PatternEditor pe = new PatternEditor();
-            pe.Source = img;
-            pe.ShowDialog();
+            Close();
+        }
+
+        private void menuItemAbout_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Pattern Cutter is open source software written by Alex Bock and released under the MIT license.");
+        }
+
+        private Pattern CreateNewPattern()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image Files|*.png;*.jpeg;*.jpg;*.bmp;*.gif";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                PatternEditor pe = new PatternEditor();
+                Image image = Bitmap.FromFile(ofd.FileName);
+                pe.Source = image;
+                if (pe.ShowDialog() == DialogResult.OK)
+                {
+                    Pattern p = pe.MakePattern();
+                    // TODO Add to library
+                    return p;
+                }
+            }
+            return null;
+        }
+
+        private void menuItemLibraryNewPattern_Click(object sender, EventArgs e)
+        {
+            CreateNewPattern();
         }
     }
 }

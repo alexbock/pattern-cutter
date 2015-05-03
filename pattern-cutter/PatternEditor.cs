@@ -30,11 +30,14 @@ namespace pattern_cutter
             }
         }
 
-        private void cbSelectFromCenter_CheckedChanged(object sender, EventArgs e)
+        public Pattern MakePattern()
         {
-            selector.SelectionOrigin = cbSelectFromCenter.Checked ?
-                ImageRegionSelector.SelectModeOrigin.Center :
-                ImageRegionSelector.SelectModeOrigin.Corner;
+            return new Pattern(txtName.Text, Source, selector.Selection);
+        }
+
+        private void PatternEditor_Load(object sender, EventArgs e)
+        {
+            txtName.SelectAll();
         }
     }
 }

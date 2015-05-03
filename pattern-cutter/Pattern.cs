@@ -3,9 +3,9 @@ using System.Drawing;
 
 namespace pattern_cutter
 {
-    class Pattern
+    public class Pattern
     {
-        Pattern(String name, Bitmap source, Rectangle sourceRegion)
+        public Pattern(String name, Image source, Rectangle sourceRegion)
         {
             Name = name;
             Source = source;
