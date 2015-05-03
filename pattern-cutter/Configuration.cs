@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace pattern_cutter
 {
-    class Configuration
+    public class Configuration
     {
         public double DPI { get; set; } = 300.0;
         public double TargetInches { get; set; } = 1.25;

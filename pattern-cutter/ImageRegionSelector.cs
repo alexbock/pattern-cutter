@@ -19,10 +19,15 @@ namespace pattern_cutter
             DottedOutlineWhite = new Pen(Color.White);
             DottedOutlineWhite.DashPattern = new float[] { 4, 4 };
             DottedOutlineBlack = new Pen(Color.Black);
+            DottedOutlineWhiteTransparent = new Pen(Color.FromArgb(128, 255, 255, 255));
+            DottedOutlineWhiteTransparent.DashPattern = new float[] { 4, 4 };
+            DottedOutlineBlackTransparent = new Pen(Color.FromArgb(128, 0, 0, 0));
         }
 
         private Pen DottedOutlineWhite;
         private Pen DottedOutlineBlack;
+        private Pen DottedOutlineWhiteTransparent;
+        private Pen DottedOutlineBlackTransparent;
 
         enum Mode { None, Select, Translate }
         public enum SelectModeOrigin { Corner, Center }
@@ -30,6 +35,7 @@ namespace pattern_cutter
         public Image Source { get; set; }
         public Rectangle Selection { get; private set; }
         public SelectModeOrigin SelectionOrigin { get; set; }
+        public Configuration Config { get; set; } = new Configuration();
 
         private Point currentSelectionStart;
         private Point currentSelectionEnd;
@@ -40,6 +46,16 @@ namespace pattern_cutter
                 // create a rectangle where the selection points are corners
                 Point start = currentSelectionStart;
                 Point end = currentSelectionEnd;
+                Debug.Print("===");
+                Debug.Print("start (mouse) " + start.ToString());
+                Debug.Print("end (mouse) " + end.ToString());
+                Debug.Print("start (image) " + TranslateMouseToImage(start).ToString());
+                Debug.Print("end (image) " + TranslateMouseToImage(end).ToString());
+                Debug.Print("image / mouse X " + ((double)Source.Width / ImageDestination.Width).ToString());
+                Debug.Print("image / mouse Y " + ((double)Source.Height / ImageDestination.Height).ToString());
+                Debug.Print("===\n");
+                start = TranslateMouseToImage(start);
+                end = TranslateMouseToImage(end);
                 bool centerMode = SelectionOrigin == SelectModeOrigin.Center;
                 if ((ModifierKeys & Keys.Control) == Keys.Control) centerMode = !centerMode;
                 if (centerMode)
@@ -116,17 +132,38 @@ namespace pattern_cutter
         private Point TranslateMouseToImage(Point m)
         {
             Rectangle dest = ImageDestination;
-            m.X *= Source.Width / dest.Width;
-            m.Y *= Source.Height / dest.Height;
+            m.X -= (Width - ImageDestination.Width) / 2;
+            m.Y -= (Height - ImageDestination.Height) / 2;
+            m.X = (int)((double)Source.Width / dest.Width * m.X);
+            m.Y = (int)((double)Source.Height / dest.Height * m.Y);
             return m;
+        }
+
+        private Rectangle TranslateImageToMouse(Rectangle r)
+        {
+            Rectangle dest = ImageDestination;
+            r.X = (int)((double)dest.Width / Source.Width * r.X);
+            r.X += (Width - ImageDestination.Width) / 2;
+            r.Y = (int)((double)dest.Height / Source.Height * r.Y);
+            r.Y += (Height - ImageDestination.Height) / 2;
+            r.Width = (int)((double)dest.Width / Source.Width * r.Width);
+            r.Height = (int)((double)dest.Height / Source.Height * r.Height);
+            return r;
         }
 
         private void DrawSelectionOutline(Graphics g, Rectangle rect)
         {
-            g.DrawRectangle(DottedOutlineBlack, rect);
-            g.DrawRectangle(DottedOutlineWhite, rect);
+            rect = TranslateImageToMouse(rect);
             g.DrawEllipse(DottedOutlineBlack, rect);
             g.DrawEllipse(DottedOutlineWhite, rect);
+            int overscanWidth = (int)(Config.DefaultOverscan * rect.Width);
+            int overscanHeight = (int)(Config.DefaultOverscan * rect.Height);
+            rect.Width += overscanWidth;
+            rect.Height += overscanHeight;
+            rect.X -= overscanWidth / 2;
+            rect.Y -= overscanHeight / 2;
+            g.DrawRectangle(DottedOutlineBlackTransparent, rect);
+            g.DrawRectangle(DottedOutlineWhiteTransparent, rect);
         }
 
         private void ImageRegionSelector_Paint(object sender, PaintEventArgs e)
