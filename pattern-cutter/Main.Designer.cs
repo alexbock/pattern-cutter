@@ -36,7 +36,12 @@
             this.menuItemOpenSheet = new System.Windows.Forms.MenuItem();
             this.menuItemSaveSheet = new System.Windows.Forms.MenuItem();
             this.menuItemSaveSheetAs = new System.Windows.Forms.MenuItem();
+            this.menuItemExport = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.menuItemAddPattern = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.menuItemPrint = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItemExit = new System.Windows.Forms.MenuItem();
             this.menuHelp = new System.Windows.Forms.MenuItem();
             this.menuItemAbout = new System.Windows.Forms.MenuItem();
@@ -44,18 +49,13 @@
             this.lblDPI = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTargetSize = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblSizeWithOverscan = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ilSheet = new System.Windows.Forms.ImageList(this.components);
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.menuItemPrint = new System.Windows.Forms.MenuItem();
-            this.lvSheet = new System.Windows.Forms.ListView();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnDuplicate = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnEdit = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnRemove = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnAdd = new System.Windows.Forms.ToolStripStatusLabel();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.menuItemAddPattern = new System.Windows.Forms.MenuItem();
-            this.menuItemExport = new System.Windows.Forms.MenuItem();
+            this.btnEdit = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnDuplicate = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnRemove = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ilSheet = new System.Windows.Forms.ImageList(this.components);
+            this.lvSheet = new System.Windows.Forms.ListView();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,10 +110,41 @@
             this.menuItemSaveSheetAs.Text = "Save Sheet &As...";
             this.menuItemSaveSheetAs.Click += new System.EventHandler(this.menuItemSaveSheetAs_Click);
             // 
+            // menuItemExport
+            // 
+            this.menuItemExport.Index = 4;
+            this.menuItemExport.Shortcut = System.Windows.Forms.Shortcut.CtrlE;
+            this.menuItemExport.Text = "&Export as Image...";
+            this.menuItemExport.Click += new System.EventHandler(this.menuItemExport_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 5;
+            this.menuItem2.Text = "-";
+            // 
+            // menuItemAddPattern
+            // 
+            this.menuItemAddPattern.Index = 6;
+            this.menuItemAddPattern.Shortcut = System.Windows.Forms.Shortcut.CtrlT;
+            this.menuItemAddPattern.Text = "Add Pa&ttern...";
+            this.menuItemAddPattern.Click += new System.EventHandler(this.menuItemAddPattern_Click);
+            // 
             // menuItem5
             // 
             this.menuItem5.Index = 7;
             this.menuItem5.Text = "-";
+            // 
+            // menuItemPrint
+            // 
+            this.menuItemPrint.Index = 8;
+            this.menuItemPrint.Shortcut = System.Windows.Forms.Shortcut.CtrlP;
+            this.menuItemPrint.Text = "&Print...";
+            this.menuItemPrint.Click += new System.EventHandler(this.menuItemPrint_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 9;
+            this.menuItem1.Text = "-";
             // 
             // menuItemExit
             // 
@@ -175,51 +206,22 @@
             this.lblSizeWithOverscan.Size = new System.Drawing.Size(131, 20);
             this.lblSizeWithOverscan.Text = "Size with Overscan: 1.5\"";
             // 
-            // ilSheet
-            // 
-            this.ilSheet.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.ilSheet.ImageSize = new System.Drawing.Size(48, 48);
-            this.ilSheet.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 9;
-            this.menuItem1.Text = "-";
-            // 
-            // menuItemPrint
-            // 
-            this.menuItemPrint.Index = 8;
-            this.menuItemPrint.Shortcut = System.Windows.Forms.Shortcut.CtrlP;
-            this.menuItemPrint.Text = "&Print...";
-            this.menuItemPrint.Click += new System.EventHandler(this.menuItemPrint_Click);
-            // 
-            // lvSheet
-            // 
-            this.lvSheet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvSheet.LargeImageList = this.ilSheet;
-            this.lvSheet.Location = new System.Drawing.Point(0, 0);
-            this.lvSheet.Name = "lvSheet";
-            this.lvSheet.Size = new System.Drawing.Size(874, 475);
-            this.lvSheet.TabIndex = 3;
-            this.lvSheet.UseCompatibleStateImageBehavior = false;
-            // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(301, 20);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(456, 20);
             this.toolStripStatusLabel1.Spring = true;
             // 
-            // btnDuplicate
+            // btnAdd
             // 
-            this.btnDuplicate.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            this.btnAdd.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.btnDuplicate.Image = ((System.Drawing.Image)(resources.GetObject("btnDuplicate.Image")));
-            this.btnDuplicate.Name = "btnDuplicate";
-            this.btnDuplicate.Size = new System.Drawing.Size(77, 20);
-            this.btnDuplicate.Text = "Duplicate";
-            this.btnDuplicate.Visible = false;
-            this.btnDuplicate.Click += new System.EventHandler(this.btnDuplicate_Click);
+            this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(49, 20);
+            this.btnAdd.Text = "Add";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnEdit
             // 
@@ -233,6 +235,17 @@
             this.btnEdit.Visible = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
+            // btnDuplicate
+            // 
+            this.btnDuplicate.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.btnDuplicate.Image = ((System.Drawing.Image)(resources.GetObject("btnDuplicate.Image")));
+            this.btnDuplicate.Name = "btnDuplicate";
+            this.btnDuplicate.Size = new System.Drawing.Size(77, 20);
+            this.btnDuplicate.Text = "Duplicate";
+            this.btnDuplicate.Click += new System.EventHandler(this.btnDuplicate_Click);
+            // 
             // btnRemove
             // 
             this.btnRemove.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
@@ -244,35 +257,21 @@
             this.btnRemove.Text = "Remove";
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
-            // btnAdd
+            // ilSheet
             // 
-            this.btnAdd.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(49, 20);
-            this.btnAdd.Text = "Add";
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.ilSheet.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.ilSheet.ImageSize = new System.Drawing.Size(48, 48);
+            this.ilSheet.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // menuItem2
+            // lvSheet
             // 
-            this.menuItem2.Index = 5;
-            this.menuItem2.Text = "-";
-            // 
-            // menuItemAddPattern
-            // 
-            this.menuItemAddPattern.Index = 6;
-            this.menuItemAddPattern.Shortcut = System.Windows.Forms.Shortcut.CtrlT;
-            this.menuItemAddPattern.Text = "Add Pa&ttern...";
-            this.menuItemAddPattern.Click += new System.EventHandler(this.menuItemAddPattern_Click);
-            // 
-            // menuItemExport
-            // 
-            this.menuItemExport.Index = 4;
-            this.menuItemExport.Shortcut = System.Windows.Forms.Shortcut.CtrlE;
-            this.menuItemExport.Text = "&Export as Image...";
-            this.menuItemExport.Click += new System.EventHandler(this.menuItemExport_Click);
+            this.lvSheet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvSheet.LargeImageList = this.ilSheet;
+            this.lvSheet.Location = new System.Drawing.Point(0, 0);
+            this.lvSheet.Name = "lvSheet";
+            this.lvSheet.Size = new System.Drawing.Size(874, 475);
+            this.lvSheet.TabIndex = 3;
+            this.lvSheet.UseCompatibleStateImageBehavior = false;
             // 
             // Main
             // 
@@ -282,11 +281,13 @@
             this.ClientSize = new System.Drawing.Size(874, 500);
             this.Controls.Add(this.lvSheet);
             this.Controls.Add(this.statusStrip1);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Menu = this.mainMenu;
             this.MinimumSize = new System.Drawing.Size(640, 480);
             this.Name = "Main";
             this.Text = "Pattern Cutter - untitled";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

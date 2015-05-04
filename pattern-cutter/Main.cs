@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -19,6 +20,9 @@ namespace pattern_cutter
 
         List<Pattern> patterns = new List<Pattern>();
         String filename = "Untitled";
+        bool unsavedChanges = false;
+
+        Configuration config = new Configuration();
 
         public Main()
         {
@@ -32,7 +36,8 @@ namespace pattern_cutter
 
         private void menuItemAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Pattern Cutter is open source software written by Alex Bock and released under the MIT license.");
+            MessageBox.Show("Pattern Cutter is open source software written by Alex Bock and released under the MIT license." +
+                "\n\nFugue Icons (C) 2013 Yusuke Kamiyamane. All rights reserved.");
         }
 
         private Pattern CreateNewPattern()
@@ -71,6 +76,7 @@ namespace pattern_cutter
         private void btnAdd_Click(object sender, EventArgs e)
         {
             AddPattern(CreateNewPattern());
+            unsavedChanges = true;
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -85,11 +91,18 @@ namespace pattern_cutter
                 patterns.Remove((Pattern)item.Tag);
                 lvSheet.Items.Remove(item);
             }
+            unsavedChanges = true;
         }
 
         private void btnDuplicate_Click(object sender, EventArgs e)
         {
-            // TODO
+            foreach (ListViewItem item in lvSheet.SelectedItems)
+            {
+                Pattern pattern = (Pattern)item.Tag;
+                Pattern copy = new Pattern(pattern.Name, (Image)pattern.Source.Clone(), pattern.SourceRegion);
+                AddPattern(copy);
+            }
+            unsavedChanges = true;
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -104,15 +117,25 @@ namespace pattern_cutter
             patterns.Clear();
             ilSheet.Images.Clear();
             UpdateFilename();
+            unsavedChanges = false;
+        }
+
+        private bool ConfirmClear()
+        {
+            if (!unsavedChanges) return true;
+            var r = MessageBox.Show("You have unsaved changes; are you sure?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return r == DialogResult.Yes;
         }
 
         private void menuItemNewSheet_Click(object sender, EventArgs e)
         {
+            if (!ConfirmClear()) return;
             ClearSheet();
         }
 
         private void menuItemOpenSheet_Click(object sender, EventArgs e)
         {
+            if (!ConfirmClear()) return;
             ClearSheet();
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Pattern Cutter Sheets|*.pcs";
@@ -155,6 +178,7 @@ namespace pattern_cutter
             }
             else
             {
+                unsavedChanges = false;
                 using (FileStream file = new FileStream(filename, FileMode.OpenOrCreate))
                 {
                     using (BinaryWriter writer = new BinaryWriter(file))
@@ -198,19 +222,75 @@ namespace pattern_cutter
             AddPattern(CreateNewPattern());
         }
 
+        private Image PrepareForExport()
+        {
+            int paperWidth = (int)(config.PaperWidthInches * config.DPI);
+            int paperHeight = (int)(config.PaperHeightInches * config.DPI);
+            Bitmap surface = new Bitmap(paperWidth, paperHeight);
+            Graphics g = Graphics.FromImage(surface);
+            g.FillRectangle(Brushes.White, 0, 0, surface.Width, surface.Height);
+            Point put = Point.Empty;
+            foreach (ListViewItem item in lvSheet.Items)
+            {
+                Pattern pattern = (Pattern)item.Tag;
+                int patternWidth = (int)(pattern.SourceRegion.Width * (1.0 + pattern.Overscan));
+                int patternHeight = (int)(pattern.SourceRegion.Height * (1.0 + pattern.Overscan));
+                Rectangle source = pattern.SourceRegion;
+                source.X -= patternWidth / 2;
+                source.Width += patternWidth;
+                source.Y -= patternHeight / 2;
+                source.Height += patternHeight;
+                int tileSize = (int)(config.TargetInches * config.DPI);
+                if (put.X + tileSize >= surface.Width)
+                {
+                    put.X = 0;
+                    put.Y += tileSize;
+                }
+                g.DrawImage(pattern.Source, new Rectangle(put.X, put.Y, tileSize, tileSize), source, GraphicsUnit.Pixel);
+                put.X += tileSize;
+            }
+            surface.SetResolution((float)config.DPI, (float)config.DPI);
+            return surface;
+        }
+
         private void menuItemPrint_Click(object sender, EventArgs e)
         {
-            // TODO
+            PrintDialog pd = new PrintDialog();
+            pd.AllowCurrentPage = false;
+            pd.AllowPrintToFile = false;
+            pd.AllowSomePages = false;
+            pd.AllowSelection = false;
+            if (pd.ShowDialog() == DialogResult.OK)
+            {
+                PrintDocument doc = new PrintDocument();
+                doc.DocumentName = filename;
+                doc.PrintPage += (sender_, e_) =>
+                {
+                    e_.Graphics.DrawImage(PrepareForExport(), Point.Empty);
+                };
+                doc.Print();
+            }
         }
 
         private void menuItemExport_Click(object sender, EventArgs e)
         {
-            // TODO
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Export...";
+            sfd.Filter = "PNG Files|*.png";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                PrepareForExport().Save(sfd.FileName);
+            }
         }
 
         private void UpdateFilename()
         {
             Text = "Pattern Cutter - " + filename;
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!ConfirmClear()) e.Cancel = true;
         }
     }
 }
