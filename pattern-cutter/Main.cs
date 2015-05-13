@@ -37,7 +37,7 @@ namespace pattern_cutter
         private void menuItemAbout_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Pattern Cutter is open source software written by Alex Bock and released under the MIT license." +
-                "\n\nFugue Icons (C) 2013 Yusuke Kamiyamane. All rights reserved.");
+                "\n\nFugue Icons (C) 2013 Yusuke Kamiyamane. All rights reserved.", "Pattern Cutter v1.01");
         }
 
         private Pattern CreateNewPattern()
@@ -122,9 +122,12 @@ namespace pattern_cutter
 
         private bool ConfirmClear()
         {
+#if false
             if (!unsavedChanges) return true;
             var r = MessageBox.Show("You have unsaved changes; are you sure?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             return r == DialogResult.Yes;
+#endif
+            return true;
         }
 
         private void menuItemNewSheet_Click(object sender, EventArgs e)
@@ -235,12 +238,14 @@ namespace pattern_cutter
                 Pattern pattern = (Pattern)item.Tag;
                 int patternWidth = (int)(pattern.SourceRegion.Width * (1.0 + pattern.Overscan));
                 int patternHeight = (int)(pattern.SourceRegion.Height * (1.0 + pattern.Overscan));
+                int diffX = patternWidth - pattern.SourceRegion.Width;
+                int diffY = patternHeight - pattern.SourceRegion.Height;
                 Rectangle source = pattern.SourceRegion;
-                source.X -= patternWidth / 2;
-                source.Width += patternWidth;
-                source.Y -= patternHeight / 2;
-                source.Height += patternHeight;
-                int tileSize = (int)(config.TargetInches * config.DPI);
+                source.X -= diffX / 2;
+                source.Width = patternWidth;
+                source.Y -= diffY / 2;
+                source.Height = patternHeight;
+                int tileSize = (int)(config.TargetInches * (1.0 + config.DefaultOverscan) * config.DPI);
                 if (put.X + tileSize >= surface.Width)
                 {
                     put.X = 0;
